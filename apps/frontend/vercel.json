@@ -1,10 +1,10 @@
 {
-  "version": 2,
   "cleanUrls": true,
   "trailingSlash": false,
-  "framework": null,
   "rewrites": [
-    { "handle": "filesystem" },
-    { "source": "/(.*)", "destination": "/index.html" }
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
   ]
 }
