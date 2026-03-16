@@ -7,4 +7,12 @@ export default defineConfig({
     react(),
     tailwindcss(),
   ],
+  build: {
+    rollupOptions: {
+      external: ['@cartridge/controller'],
+    },
+  },
+  optimizeDeps: {
+    exclude: ['@cartridge/controller'],
+  },
 })
