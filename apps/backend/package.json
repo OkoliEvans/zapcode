@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "node --watch src/server.js",
-    "worker": "node --watch src/worker.js",
+    "worker": "node src/worker.js",
     "start": "node src/server.js",
     "start:all": "concurrently \"npm run start\" \"npm run worker\"",
     "db:generate": "drizzle-kit generate",

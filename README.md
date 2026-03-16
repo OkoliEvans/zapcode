@@ -385,7 +385,7 @@ calls CoinGecko directly from hot paths.
 | Backend | Express 4 (ESM) + Node.js 20 |
 | ORM | Drizzle ORM |
 | Database | PostgreSQL — merchants, transactions, buyers tables |
-| Email | Nodemailer + Gmail SMTP |
+| Email | Nodemailer + Email SMTP |
 | FX Rates | CoinGecko API (60s cache) |
 | QR Generation | `canvas` + `qrcode` — 800×800 PNG with optional logo overlay |
 | Countries | `country-list` npm package |
