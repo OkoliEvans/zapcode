@@ -1,0 +1,33 @@
+{
+  "name": "zapcode-backend",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "node --watch src/server.js",
+    "worker": "node --watch src/worker.js",
+    "start": "node src/server.js",
+    "start:all": "concurrently \"npm run start\" \"npm run worker\"",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "node src/db/migrate.js",
+    "db:studio": "drizzle-kit studio"
+  },
+  "dependencies": {
+    "@privy-io/node": "^0.11.0",
+    "@privy-io/server-auth": "^1.16.0",
+    "concurrently": "^8.2.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "drizzle-orm": "^0.31.2",
+    "express": "^4.19.2",
+    "jimp": "^1.6.0",
+    "nodemailer": "^6.9.14",
+    "pg": "^8.12.0",
+    "qrcode": "^1.5.4",
+    "starknet": "^9.4.2",
+    "uuid": "^10.0.0"
+  },
+  "devDependencies": {
+    "drizzle-kit": "^0.22.8"
+  }
+}
