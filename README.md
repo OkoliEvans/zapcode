@@ -225,7 +225,7 @@ zapcode/
 - Postgres database (Neon, Supabase, Railway — any)
 - Privy account → [privy.io](https://privy.io)
 - Alchemy Starknet RPC URL (must use `v0_10` endpoint)
-- Gmail account with an [App Password](https://myaccount.google.com/apppasswords) enabled
+- Email account with an [App Password](https://myaccount.google.com/apppasswords) enabled
 - AVNU API key → [portal.avnu.fi](https://portal.avnu.fi)
 - Treasury wallet: standard Argent X account on Starknet mainnet, **no guardian**
 
