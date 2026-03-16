@@ -14,6 +14,7 @@
   "license": "ISC",
   "packageManager": "pnpm@10.14.0",
   "dependencies": {
+    "@cartridge/controller": "^0.13.9",
     "@privy-io/react-auth": "^3.17.0",
     "axios": "^1.13.6",
     "country-list": "^2.4.1",
