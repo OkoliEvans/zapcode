@@ -27,9 +27,9 @@ const STRK_ADDRESS =
   "0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d";
 
 // 0.001 STRK for buyers — covers deploy gas
-const BUYER_PREFUND = BigInt("200000000000000000");
+const BUYER_PREFUND = BigInt("400000000000000000");
 // 0.15 STRK for merchants
-const MERCHANT_PREFUND = BigInt("200000000000000000");
+const MERCHANT_PREFUND = BigInt("400000000000000000");
 
 const avnuHeaders = {
   "Content-Type": "application/json",
