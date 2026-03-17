@@ -148,8 +148,8 @@ export async function pollOnce() {
     const latestBlock = await provider.getBlockNumber();
 
     if (lastCheckedBlock === null) {
-      lastCheckedBlock = latestBlock;
-      console.log(`[watcher] starting from block ${latestBlock}`);
+      lastCheckedBlock = 7702278;
+      console.log(`[watcher] starting from block 7702278`);
       return;
     }
 
