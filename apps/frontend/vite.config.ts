@@ -1,21 +1,17 @@
+// apps/frontend/vite.config.ts
 import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import react from '@vitejs/plugin-react' // Use this, NOT the react-router plugin
 import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
-  plugins: [react(), tailwindcss()],
+  plugins: [
+    react(),
+    tailwindcss(),
+  ],
   base: '/',
   build: {
     outDir: 'dist',
-    rollupOptions: {
-      external: ['@cartridge/controller'],
-    },
-  },
-  optimizeDeps: {
-    exclude: ['@cartridge/controller'],
-  },
-  define: {
-    'process.env': {},
-    global: 'globalThis',
-  },
+    // This ensures no weird server-side chunks are created
+    ssr: false, 
+  }
 })
