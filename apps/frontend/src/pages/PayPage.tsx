@@ -32,15 +32,16 @@ export function PayPage() {
   const { merchantId }  = useParams<{ merchantId: string }>()
   const { authenticated, login, getAccessToken } = usePrivy()
 
-  const [merchant, setMerchant] = useState<PublicMerchant | null>(null)
-  const [step, setStep]         = useState<PayStep>('loading')
-  const [amount, setAmount]     = useState('')
-  const [txHash, setTxHash]     = useState<string | null>(null)
-  const [errMsg, setErrMsg]     = useState<string | null>(null)
-  const [balances, setBalances] = useState<Balances | null>(null)
-  const [payToken, setPayToken] = useState<'USDC' | 'USDC.e'>('USDC')
-  const walletRef               = useRef<any>(null)
-  const deployingRef            = useRef(false)
+  const [merchant, setMerchant]       = useState<PublicMerchant | null>(null)
+  const [step, setStep]               = useState<PayStep>('loading')
+  const [amount, setAmount]           = useState('')
+  const [txHash, setTxHash]           = useState<string | null>(null)
+  const [errMsg, setErrMsg]           = useState<string | null>(null)
+  const [balances, setBalances]       = useState<Balances | null>(null)
+  const [payToken, setPayToken]       = useState<'USDC' | 'USDC.e'>('USDC')
+  const [buyerAddress, setBuyerAddress] = useState<string | null>(null)
+  const walletRef                     = useRef<any>(null)
+  const deployingRef                  = useRef(false)
 
   // ── Load merchant ─────────────────────────────────────────────────────────
   useEffect(() => {
@@ -98,6 +99,8 @@ export function PayPage() {
             if (!res.ok) throw new Error('Could not initialise wallet')
             const { wallet: w } = await res.json()
             if (!w.publicKey) throw new Error('Wallet not ready — try again shortly')
+            // Store buyer address for display
+            setBuyerAddress(w.address)
             return {
               walletId:  w.id,
               publicKey: w.publicKey,
@@ -118,7 +121,7 @@ export function PayPage() {
         usdc = parseFloat(b.toUnit())
       } catch { /* ignore */ }
 
-      // USDC.e — mainnet only, use raw contract address as Token
+      // USDC.e — mainnet only
       if (network === 'mainnet') {
         try {
           const usdceToken: Token = {
@@ -133,7 +136,6 @@ export function PayPage() {
       }
 
       setBalances({ usdc, usdce, total: usdc + usdce })
-      // Default to whichever token has a higher balance
       setPayToken(usdce > usdc ? 'USDC.e' : 'USDC')
       setStep('amount')
     } catch (e: any) {
@@ -192,8 +194,8 @@ export function PayPage() {
   const fxStr        = fx ? `1 USDC ≈ ${fx.rate.toFixed(2)} ${merchant?.currency}` : null
   const networkLabel = merchant?.network === 'mainnet' ? 'Mainnet' : 'Sepolia'
 
-  const parsedAmount    = parseFloat(amount)
-  const activeBalance   = balances ? (payToken === 'USDC.e' ? balances.usdce : balances.usdc) : null
+  const parsedAmount      = parseFloat(amount)
+  const activeBalance     = balances ? (payToken === 'USDC.e' ? balances.usdce : balances.usdc) : null
   const insufficientFunds = activeBalance !== null && parsedAmount > 0 && parsedAmount > activeBalance
 
   return (
@@ -317,7 +319,6 @@ export function PayPage() {
               {/* Balance display */}
               {balances && (
                 <div className="mb-4 space-y-1">
-                  {/* Total */}
                   <div className="flex items-center justify-between">
                     <span className="text-[11px] text-dim">
                       Total: <span className={`font-semibold ${balances.total === 0 ? 'text-danger' : 'text-cream'}`}>
@@ -333,14 +334,12 @@ export function PayPage() {
                       </span>
                     )}
                   </div>
-                  {/* Breakdown — show if both non-zero */}
                   {balances.usdc > 0 && balances.usdce > 0 && (
                     <div className="flex gap-3 text-[10px] text-dim">
                       <span>USDC: <span className="text-muted">{balances.usdc.toFixed(4)}</span></span>
                       <span>USDC.e: <span className="text-muted">{balances.usdce.toFixed(4)}</span></span>
                     </div>
                   )}
-                  {/* Single balance if only one */}
                   {(balances.usdc === 0 || balances.usdce === 0) && (
                     <div className="text-[11px] text-dim">
                       {payToken}: <span className={`font-semibold ${activeBalance === 0 ? 'text-danger' : 'text-cream'}`}>
@@ -352,9 +351,23 @@ export function PayPage() {
               )}
 
               {fx && amount && parsedAmount > 0 && (
-                <p className="text-xs text-muted mb-5 text-center">
+                <p className="text-xs text-muted mb-4 text-center">
                   ≈ {(parsedAmount * fx.rate).toFixed(2)} {merchant.currency}
                 </p>
+              )}
+
+              {/* Your wallet address — always visible for funding */}
+              {buyerAddress && (
+                <div className="mb-4 bg-s2 border border-white/7 rounded-xl px-4 py-3">
+                  <p className="text-[10px] tracking-widest uppercase text-dim mb-2">Your wallet</p>
+                  <div className="flex items-center gap-2">
+                    <p className="text-[10px] font-mono text-muted truncate flex-1">{buyerAddress}</p>
+                    <CopyButton value={buyerAddress} />
+                  </div>
+                  <p className="text-[10px] text-dim mt-1.5 leading-relaxed">
+                    Send USDC or USDC.e here to fund your wallet before paying.
+                  </p>
+                </div>
               )}
 
               <Button
